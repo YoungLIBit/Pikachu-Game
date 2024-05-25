@@ -674,5 +674,5 @@ class Game extends React.Component {
     }
 
 }
-
+//Update HighScore
 export default Game;
