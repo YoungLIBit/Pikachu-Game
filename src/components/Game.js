@@ -14,7 +14,7 @@ let i, j, k;  // iterator
 class Game extends React.Component {
 
     /**
-     * @description update items board when reload event is triggered
+     * @description cập nhật bảng khi sự kiện tải lại được kích hoạt
      */
     reloadHandler = () => {
         if(this.state.reload <= 0) {
@@ -36,7 +36,7 @@ class Game extends React.Component {
         }
     };
     /**
-     * @description: create new board and do something when level up
+     * @description: tạo bảng mới và thực hiện một số hành động khi lên cấp
      */
     doNextLevel = () => {
         const _newItems = getBoard(this.row, this.col, this.amount);
@@ -56,10 +56,10 @@ class Game extends React.Component {
     };
 
     /**
-     * @description test if two points on a line (vertical or horizontal)
-     * @param abscissa of first item
-     * @param abscissa of next item
-     * @param ordinate of two items
+     * @description  kiểm tra nếu hai điểm trên cùng một hàng hoặc cột
+     * @param abscissa của mục đầu tiên
+     * @param abscissa của mục tiếp theo
+     * @param ordinate của hai mục
      * @returns {boolean}
      */
     checkLineX = (y1, y2, x) => {
@@ -95,9 +95,9 @@ class Game extends React.Component {
     };
 
     /**
-     * @description test if two points in bound of the rectangle
-     * @param p1: 1th point
-     * @param p2: 2nd point
+     * @description kiểm tra nếu hai điểm nằm trong hình chữ nhật
+     * @param p1:  điểm thứ nhất
+     * @param p2: điểm thứ hai
      * @returns {boolean}
      */
     checkRectX = (p1, p2) =>{
@@ -150,9 +150,9 @@ class Game extends React.Component {
     };
 
     /**
-     * @description test if tow point in edge of rectangle
-     * @param p1: 1st point
-     * @param p2: 2nd point
+     * @description kiểm tra nếu hai điểm nằm ở cạnh của hình chữ nhật
+     * @param p1: điểm thứ nhất
+     * @param p2: điểm thứ hai
      * @returns {boolean}
      */
     checkEdge = (p1, p2) =>{
@@ -187,9 +187,9 @@ class Game extends React.Component {
     };
 
     /**
-     * @description test if two points out of bound of the rectangle
-     * @param p1: 1st point
-     * @param p2: 2nd point
+     * @description  kiểm tra nếu hai điểm nằm ngoài biên của hình chữ nhật
+     * @param p1: điểm thứ nhất
+     * @param p2: điểm thứ hai
      * @param maxY
      * @returns {boolean}
      */
@@ -202,7 +202,7 @@ class Game extends React.Component {
             pright = p1;
         }
 
-        // left to right
+        // từ trái sang phải
         this.lines = [];
         for(let yi = pleft.y + 1; yi <= pright.y; yi++) {
             this.lines.push({x: pleft.x, y: yi, value: 'horizontal'});
@@ -222,7 +222,7 @@ class Game extends React.Component {
             }
         }
 
-        // right to left
+        // từ phải sang trái
         this.lines = [];
         for(let yi = pright.y - 1; yi >= pleft.y; yi--) {
             this.lines.push({x: pright.x, y: yi, value: 'horizontal'});
@@ -242,6 +242,9 @@ class Game extends React.Component {
 
         return false;
     };
+    /**
+     * Phương pháp này kiểm tra nếu có đường kết nối theo chiều dọc giữa hai điểm p1 và p2
+     */
     checkExtendY = (p1, p2, maxX) => {
         let pup = p1;
         let pdown = p2;
@@ -251,7 +254,7 @@ class Game extends React.Component {
             pdown = p1;
         }
 
-        // up to down
+        // từ trên xuống dưới
         this.lines = [];
         for(let xi = pup.x + 1; xi <= pdown.x; xi++) {
             this.lines.push({x: xi, y: pup.y, value: 'vertical'});
@@ -269,7 +272,7 @@ class Game extends React.Component {
             }
         }
 
-        // down to up
+        // từ dưới lên trên
         this.lines = [];
         for(let xi = pdown.x - 1; xi >= pup.x; xi--) {
             this.lines.push({x: xi, y: pdown.y, value: 'vertical'});
@@ -292,7 +295,7 @@ class Game extends React.Component {
     /**
      * @param p1
      * @param p2
-     * @returns Trang thai an diem. True: co the an diem. False: khong.
+     * @returns Trạng thái ăn điểm. True: có thể ăn điểm. False: không.
      */
     isPair = (p1, p2) => {
         if (!p1 || !p2) {
@@ -308,33 +311,33 @@ class Game extends React.Component {
         if(this.state.items[x1][y1] !== this.state.items[x2][y2] || (x1 === x2 && y1 === y2)) {
             return false;
         }
-        // Case1: Tren cung 1 hang
+        // Trường hợp 1: Trên cùng 1 hàng
         if(x1 === x2 && this.checkLineX(y1, y2, x1)) return true;
 
-        // Case 2: tren cung 1 cot
+        // Trường hợp 2: Trên cùng 1 cột
         if(y1 === y2 && this.checkLineY(x1, x2, y1)) return true;
 
-        // Case 3+4: two points int edge of the rectangle
+        // Trường hợp 3+4: hai điểm nằm ở cạnh của hình chữ nhật
         if(this.checkEdge(p1, p2)) return true;
 
-        // Case 5: two points in bound of the rectangle
+        // Trường hợp 5: hai điểm trong biên của hình chữ nhật
         if(this.checkRectX(p1, p2)) return true;
 
         if(this.checkRectY(p1, p2)) return true;
 
-        // Case6: two points out of bound of the rectangle
+        // Trường hợp 6: hai điểm ngoài biên của hình chữ nhật
         if(this.checkExtendX(p1, p2, this.col)) return true;
 
         return this.checkExtendY(p1, p2, this.row);
     };
 
     /**
-     * @description add clicked items to state.
-     * @param pi: abscissa of item
-     * @param pj: ordinate of item
+     * @description thêm các mục đã nhấp vào trạng thái.
+     * @param pi: tọa độ x của mục
+     * @param pj: tọa độ y của mục
      */
     handleClick = (pi, pj) => {
-        // Check if this items is out of board
+        // Kiểm tra nếu mục này nằm ngoài bảng
         if(this.state.items[pi][pj] === 0) return;
 
         if(!this.state.square1) {
@@ -352,19 +355,19 @@ class Game extends React.Component {
     constructor(props) {
         super(props);
 
-        this.row = 7;        // size of game board
+        this.row = 7;       // kích thước bảng trò chơi
         this.col = 14;
-        this.amount = 36;       // number of pokemon items
-        this.lines = [];       // array contain pokemon connected line (temp array for each isExist method running)
-        this.lastLines = [];       // array contain
-        this.count = 0;        // number of couple satisfying item case
-        this.newItems = [];             // 2-dimension (2d) array contain items whenever items state is changed
+        this.amount = 36;       // số lượng mục pokemon
+        this.lines = [];       // mảng chứa đường nối pokemon (mảng tạm thời cho mỗi lần chạy phương pháp isExist)
+        this.lastLines = [];       // mảng chứa đường nối cuối cùng
+        this.count = 0;        // số cặp thỏa mãn các trường hợp mục
+        this.newItems = [];             // mảng 2 chiều chứa các mục bất cứ khi nào trạng thái mục thay đổi
         this.time = 1000;
-        localStorage.setItem('listScore', JSON.stringify([]));
+        localStorage.setItem('listScore', JSON.stringify([])); // lưu danh sách điểm số vào local storage
         this.listScore = localStorage.getItem('listScore') ? JSON.parse(localStorage.getItem('listScore')) : new Array(5);
         this.listScoreLength = 5;
 
-        const _new = getBoard(this.row, this.col, this.amount);   // contain items from generator method.
+        const _new = getBoard(this.row, this.col, this.amount);   // tạo bảng trò chơi mới
 
         this.state = {
             items: _new,
@@ -381,13 +384,13 @@ class Game extends React.Component {
 
         this.hasLine = false;
         this.doneLine = false;
-        this.listPosItem = getListPosItem(_new, this.row, this.col, this.amount);   // contain array of position by
+        this.listPosItem = getListPosItem(_new, this.row, this.col, this.amount);   // mảng vị trí các mục
         // value of items
-        this.satisfiableItems = new Array(this.amount + 1);     // contain array of position by satisfiable item's value
+        this.satisfiableItems = new Array(this.amount + 1);     // mảng vị trí các mục thoả mãn điều kiện
     }
 
     /**
-     * @description: check game board whenever mount
+     * @description: kiểm tra bảng trò chơi mỗi khi mount
      */
     componentDidMount() {
         if(!this.isExist()) {
@@ -396,7 +399,7 @@ class Game extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        // When board is renew
+         // Khi bảng trò chơi được tạo mới
         if(this.state.isNew === true) {
             if(!this.isExist()) {
                 this.reloadHandler();
@@ -407,7 +410,7 @@ class Game extends React.Component {
             });
         }
 
-        // When board is reloaded
+        // Khi bảng trò chơi được reload
         if(this.state.isJustReloaded === true) {
             if(!this.isExist()) {
                 this.reloadHandler();
@@ -418,12 +421,12 @@ class Game extends React.Component {
             });
         }
 
-        // Round 5: Check reload board and level up
+        // Vòng 5: Kiểm tra reload bảng trò chơi và lên cấp
         if(this.state.isWillReload === true) {
             if(this.state.score === 10 * this.col * this.row * this.state.level) {
                 this.doNextLevel();
             }else{
-                // update item's position array
+                // cập nhật mảng vị trí các mục
                 this.listPosItem = getListPosItem(this.newItems, this.row, this.col, this.amount);
 
                 if(!this.isExist()) {
@@ -438,7 +441,7 @@ class Game extends React.Component {
             return;
         }
 
-        // Round 4: Remove line from board
+        // Vòng 4: Xóa đường nối khỏi bảng
         if(this.doneLine) {
             this.lastLines.map((line) => this.newItems[line.x][line.y] = 0);
 
@@ -461,7 +464,7 @@ class Game extends React.Component {
             return;
         }
 
-        // Round 3: Display connected line
+        // Vòng 3: Hiển thị đường nối đã kết nối
         if(this.hasLine) {
             this.hasLine = false;
             this.doneLine = true;
@@ -473,12 +476,12 @@ class Game extends React.Component {
             return;
         }
 
-        // Round 1: Check if 2 items is valid (not null) or not
+        // Vòng 1: Kiểm tra nếu 2 mục hợp lệ (không null)
         if (this.state.square1 && this.state.square2) {
             this.newItems = this.state.items.slice();
             const value = this.newItems[this.state.square1.x][this.state.square1.y];
 
-            // Round 2: Check if 2 items is satisfiable or not. If yes then update score and assign lastLines value
+            // Vòng 2: Kiểm tra nếu 2 mục thoả mãn điều kiện. Nếu có, cập nhật điểm số và gán giá trị cho lastLines
             for(i = 0; i < this.satisfiableItems[value].length; i++) { // compare two object
                 if ( (this.satisfiableItems[value][i].square1.x === this.state.square1.x
                     && this.satisfiableItems[value][i].square1.y === this.state.square1.y
@@ -501,13 +504,13 @@ class Game extends React.Component {
 
                     this.hasLine = true;
 
-                    // Remove from listPosItems
+                    // Xóa khỏi listPosItems
                     this.listPosItem[value][this.satisfiableItems[value][i].item1] = this.listPosItem[value][this.listPosItem[value].length - 1];
                     this.listPosItem[value].pop();
                     this.listPosItem[value][this.satisfiableItems[value][i].item2] = this.listPosItem[value][this.listPosItem[value].length - 1];
                     this.listPosItem[value].pop();
 
-                    // Remove couple from satisfiableItems array
+                    // Xóa cặp mục khỏi mảng satisfiableItems
                     this.satisfiableItems[value][i] = this.satisfiableItems[value][this.satisfiableItems[value].length - 1];
                     this.satisfiableItems[value].pop();
 
@@ -530,17 +533,17 @@ class Game extends React.Component {
      * @returns {boolean}
      */
     isExist() {
-        this.count = 0; // reset count
+        this.count = 0; // đặt lại biến đếm
 
-        // Initialize 2d array
+        // Khởi tạo mảng 2 chiều
         this.satisfiableItems = [...Array(this.amount + 1)].fill(null).map(() => []);
 
-        // Iterate each item
+        // Duyệt qua từng mục
         for(i = 1; i < this.listPosItem.length; i++) {
-            // Case 1: 0 item
+            //Trường hợp 1: Không có mục nào
             if(!this.listPosItem[i] || this.listPosItem[i].length === 0) continue;
 
-            // Case 2: 2, 4, 6... items
+            // Trường hợp 2: 2, 4, 6... mục
             for(j = 0; j < this.listPosItem[i].length; j++) {
                 for(k = j + 1; k < this.listPosItem[i].length; k++) {
                     this.lines = [];
@@ -556,9 +559,9 @@ class Game extends React.Component {
     }
 
     renew() {
-        this.saveScore(this.state.score);
+        this.saveScore(this.state.score);  // lưu điểm số
 
-        const _newItems = getBoard(this.row, this.col, this.amount);
+        const _newItems = getBoard(this.row, this.col, this.amount); // tạo bảng mới
         this.setState({
             items: _newItems,
             score: 0,
@@ -568,47 +571,47 @@ class Game extends React.Component {
             isNew: true
         });
 
-        this.listPosItem = getListPosItem(_newItems, this.row, this.col, this.amount);
-        this.satisfiableItems = new Array(this.amount + 1);
+        this.listPosItem = getListPosItem(_newItems, this.row, this.col, this.amount); // cập nhật vị trí các mục
+        this.satisfiableItems = new Array(this.amount + 1); // khởi tạo lại mảng các mục thỏa mãn
     }
 
     /**
-     * @description save score into local storage
+     * @description lưu điểm số vào local storage
      * @param score
      */
     saveScore(score){
         if(score > this.listScore[this.listScoreLength - 1] || this.listScore.length < this.listScoreLength){
             this.listScore.push(score);
         }
-        localStorage.setItem("listScore", this.listScore.sort((a,b) => b-a ));
+        localStorage.setItem("listScore", this.listScore.sort((a,b) => b-a )); // sắp xếp và lưu điểm số
     }
 
     /**
-     * @description do whenever level up
+     * @description xử lý khi lên cấp
      * @param level
      */
     handleLevel(level) {
         switch (level) {
             case 2:
-                // level2Top-Down
+                // level2 từ trên xuống dưới
                 this.newItems = moveTop2Down(this.newItems, this.state.square1.y);
                 this.newItems = moveTop2Down(this.newItems, this.state.square2.y);
                 break;
 
             case 3:
-                // level2Down-top
+                // level2 từ dưới lên trên
                 this.newItems = moveDown2Top(this.newItems, this.state.square1.y);
                 this.newItems = moveDown2Top(this.newItems, this.state.square2.y);
                 break;
 
             case 4:
-                // level2Right-Left
+                // level2 từ phải sang trái
                 this.newItems = moveRight2Left(this.newItems, this.state.square1.x);
                 this.newItems = moveRight2Left(this.newItems, this.state.square2.x);
                 break;
 
             case 5:
-                // level2Left-Right
+                // level2 từ trái sang phải
                 this.newItems = moveLeft2Right(this.newItems, this.state.square1.x);
                 this.newItems = moveLeft2Right(this.newItems, this.state.square2.x);
                 break;
@@ -619,19 +622,19 @@ class Game extends React.Component {
                 break;
 
             case 7:
-                // level3-center-Top- Down
+                //  level3 từ giữa trên xuống dưới
                 this.newItems = move3CenterTopDown(this.newItems, this.state.square1.y, this.state.square1.x);
                 this.newItems = move3CenterTopDown(this.newItems, this.state.square2.y, this.state.square2.x);
                 break;
 
             case 8:
-                // level3-Out-Left-Right
+                // level3 từ ngoài vào giữa trái phải
                 this.newItems = move3OutLeftRight(this.newItems, this.state.square1.x, this.state.square1.y);
                 this.newItems = move3OutLeftRight(this.newItems, this.state.square2.x, this.state.square2.y);
                 break;
 
             case 9:
-                // level3-Out TopDown
+                // level3 từ ngoài vào giữa trên dưới
                 this.newItems = move3OutTopDown(this.newItems, this.state.square1.x, this.state.square1.y);
                 this.newItems = move3OutTopDown(this.newItems, this.state.square2.x, this.state.square2.y);
                 break;
