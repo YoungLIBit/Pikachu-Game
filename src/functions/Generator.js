@@ -92,7 +92,7 @@ export function reloadBoard(sourceArr, row, col, amount) {
             }
         }
     }
-    // Tạo bảng mới từ bảng nguồn và gán các giá trị là 0
+    // Tạo bảng mới từ bảng nguồn và gán các giá trị là 0;
     const table = sourceArr.slice().map(value => value.fill(0));
 
     for(let k = 0; k < tmpIndex.length; k++) {

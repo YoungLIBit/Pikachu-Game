@@ -634,7 +634,7 @@ class Game extends React.Component {
                 break;
 
             case 9:
-                // level3 từ ngoài vào giữa trên dưới
+                // level3 từ ngoài vào giữa trên dưới;
                 this.newItems = move3OutTopDown(this.newItems, this.state.square1.x, this.state.square1.y);
                 this.newItems = move3OutTopDown(this.newItems, this.state.square2.x, this.state.square2.y);
                 break;
