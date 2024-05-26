@@ -28,7 +28,7 @@ function getRandom(a, b) {
 function getRow(n, col) {
     return Math.ceil(n / col);
 }
-
+//Khởi taạo cột
 function getCol(n, col) {
     return n % col === 0 ? col : n % col;
 }
