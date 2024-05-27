@@ -360,7 +360,7 @@ class Game extends React.Component {
         this.count = 0;        // number of couple satisfying item case
         this.newItems = [];             // 2-dimension (2d) array contain items whenever items state is changed
         this.time = 1000;
-        localStorage.setItem('listScore', JSON.stringify([]));
+        localStorage.setItem('listScore', JSON.stringify([])); //set LocalStorage for listScore
         this.listScore = localStorage.getItem('listScore') ? JSON.parse(localStorage.getItem('listScore')) : new Array(5);
         this.listScoreLength = 5;
 
@@ -376,7 +376,8 @@ class Game extends React.Component {
             level: 1,
             isWillReload: false,
             isJustReloaded: false,
-            isNew: false
+            isNew: false,
+            isModalOpen: false
         };
 
         this.hasLine = false;
@@ -641,8 +642,13 @@ class Game extends React.Component {
         }
         
     }
-
+    //Check modal is open or hide
+    toggleModal = () => {
+        this.setState({isModalOpen: !this.state.isModalOpen});
+    }
     render() {
+        //get maxScore form listScore, check exits listScore and listScore otherwise empty
+        const maxScore = this.listScore && this.listScore.length > 0 ? Math.max(...this.listScore) : '0';
         return (
             <div className="game">
                 <div className="game-board">
@@ -661,18 +667,36 @@ class Game extends React.Component {
 
                 <div className="score-board">
 
-                    <h2 className={'level'} >Level: {this.state.level}</h2>
-                    <h3 className={'score'} >Score: {this.state.score}</h3>
-                    <h4 className={'reload'} >Reload Time Count: {this.state.reload}</h4>
+                    <h2 className={'level'}>Level: {this.state.level}</h2>
+                    <h3 className={'score'}>Score: {this.state.score}</h3>
+                    <h4 className={'reload'}>Reload Time Count: {this.state.reload}</h4>
                     <button onClick={this.reloadHandler}>Reload</button>
-                    <h2>Score: {this.listScore}</h2>
-                    <ScoreBoard score={this.listScore}/>
+                    <h2>Max Score: {maxScore}</h2>
+                    {/*Hien thi ra diem so cao
+                     Goi lai component trong ScoreBoard*/}
+                    {/*Set event onclick for button highScore*/}
+                    <button onClick={this.toggleModal}>High Score</button>
+                    {this.state.isModalOpen &&
+                        // Show modal High Score
+                        <HighScoreModal onClose={this.toggleModal} scores={this.listScore}/>}
+                    {/*<ScoreBoard score={this.state.listScore}/>*/}
+                    {/*<ScoreBoard score={this.listScore}/>*/}
                 </div>
-
             </div>
         );
     }
 
 }
+//Modal highScore with 2 properties, close modal and listScore
+const HighScoreModal = ({ onClose, scores }) => {
+    return (
+        <div className="modal">
+            <div className="modal-content">
+                <span className="close-button" onClick={onClose}>&times;</span>
+                <ScoreBoard score={scores} />
+            </div>
+        </div>
+    );
+};
 //Update HighScore
 export default Game;

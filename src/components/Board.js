@@ -14,7 +14,6 @@ class Board extends React.Component {
             />
         );
     }
-
     render() {
         const boardGame = this.props.squares.map((item, i) =>
             <div key={i} className="board-row">
@@ -39,7 +38,11 @@ class Board extends React.Component {
 
         return (
             <div>
-                {boardGame}
+                {boardGame.map((item) => (
+                    <div>
+                        {item}
+                    </div>
+                ))}
             </div>
         );
     }
