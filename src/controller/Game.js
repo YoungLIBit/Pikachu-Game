@@ -1,12 +1,12 @@
 /* eslint-disable react/no-did-update-set-state */
 import React from 'react';
-import Board from './Board';
+import Board from '../components/Board';
 import { getBoard, reloadBoard} from '../functions/Generator';
 import {getListPosItem} from '../functions/Binder';
-import Timer from './Timer';
+import Timer from '../components/Timer';
 import { moveTop2Down, moveDown2Top, moveRight2Left, moveLeft2Right, move3CenterLeftRight, move3CenterTopDown, move3OutLeftRight, move3OutTopDown } from './Level';
 // import { ProgressBar } from 'react-bootstrap';
-import ScoreBoard from "./ScoreBoard";
+import ScoreBoard from "../components/ScoreBoard";
 import Fireworks from 'fireworks-react';
 
 let i, j, k;  // iterator
