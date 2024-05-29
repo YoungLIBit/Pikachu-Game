@@ -836,6 +836,7 @@ class Game extends React.Component {
     }
   }
 
+  // hàm để thoát game
   handleExitGame() {
     const userConfirmed = window.confirm(
       "Bạn đã thoát game, bạn có muốn bắt đầu lại không?"
@@ -872,6 +873,7 @@ class Game extends React.Component {
           <button onClick={this.reloadHandler}>Reload</button>
           <h2>Score: {this.listScore}</h2>
           <ScoreBoard score={this.listScore} />
+          // đây là phần em làm
           <button className="quit-game" onClick={this.handleExitGame}>
             Thoát game
           </button>
