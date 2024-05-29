@@ -101,27 +101,34 @@ class Game extends React.Component {
      * @returns {boolean}
      */
     checkRectX = (p1, p2) =>{
+        // Khởi tạo pleft và pright với giá trị ban đầu là p1 và p2
         let pleft = p1;
         let pright = p2;
 
+        // Nếu tọa độ y của p1 lớn hơn tọa độ y của p2, hoán đổi pleft và pright
         if(p1.y > p2.y) {
             pleft = p2;
             pright = p1;
         }
-
+        // Khởi tạo mảng this.lines rỗng để lưu trữ các đường thẳng
         this.lines = [];
+        // Vòng lặp từ y của pleft + 1 đến y của pright
         for(let yi = pleft.y + 1; yi < pright.y; yi++) {
             if(this.checkLineX(pleft.y, yi, pleft.x) && this.checkLineY(pleft.x, pright.x, yi) && this.checkLineX(yi, pright.y, pright.x) && this.state.items[pleft.x][yi] === 0 && this.state.items[pright.x][yi] === 0) {
+                // Nếu tọa độ x của pleft lớn hơn tọa độ x của pright
                 if(pleft.x > pright.x) {
+                    // Thêm các đường thẳng vào mảng this.lines với giá trị top_left và bottom_right
                     this.lines.push({x: pleft.x, y: yi, value: 'top_left'}, {x: pright.x, y: yi, value: 'bottom_right'});
                 }else{
+                    // Thêm các đường thẳng vào mảng this.lines với giá trị bottom_left và top_right
                     this.lines.push({x: pleft.x, y: yi, value: 'bottom_left'}, {x: pright.x, y: yi, value: 'top_right'});
                 }
-
+                // Trả về true nếu điều kiện được thỏa mãn
                 return true;
             }
         }
 
+        // Trả về false nếu không có đường thẳng nào thỏa mãn điều kiện
         return false;
     };
     checkRectY = (p1, p2) => {
@@ -634,7 +641,7 @@ class Game extends React.Component {
                 break;
 
             case 9:
-                // level3 từ ngoài vào giữa trên dưới;
+                // level3 từ ngoài vào giữa trên dưới;NPMgitnpm
                 this.newItems = move3OutTopDown(this.newItems, this.state.square1.x, this.state.square1.y);
                 this.newItems = move3OutTopDown(this.newItems, this.state.square2.x, this.state.square2.y);
                 break;
