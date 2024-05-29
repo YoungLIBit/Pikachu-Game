@@ -642,6 +642,12 @@ class Game extends React.Component {
         }
         
     }
+    handleExitGame(){
+        const userConfirmed = window.confirm("Bạn đã thoát game, bạn có muốn bắt đầu lại không");
+        if(userConfirmed){
+            window.location.reload();
+        }
+    }
     //Check modal is open or hide
     toggleModal = () => {
         this.setState({isModalOpen: !this.state.isModalOpen});
@@ -672,14 +678,17 @@ class Game extends React.Component {
                     <h4 className={'reload'}>Reload Time Count: {this.state.reload}</h4>
                     <button onClick={this.reloadHandler}>Reload</button>
                     <h2>Max Score: {maxScore}</h2>
+                    <button className={"quit-game"} onClick={this.handleExitGame}>Thoát game</button>
                     {/*Hien thi ra diem so cao
                      Goi lai component trong ScoreBoard*/}
                     {/*Set event onclick for button highScore*/}
                     <button onClick={this.toggleModal}>High Score</button>
+                    {/**/}
                     {this.state.isModalOpen &&
                         // Show modal High Score
                         <HighScoreModal onClose={this.toggleModal} scores={this.listScore}/>}
                     {/*<ScoreBoard score={this.state.listScore}/>*/}
+
                     {/*<ScoreBoard score={this.listScore}/>*/}
                 </div>
             </div>
@@ -687,6 +696,7 @@ class Game extends React.Component {
     }
 
 }
+
 //Modal highScore with 2 properties, close modal and listScore
 const HighScoreModal = ({ onClose, scores }) => {
     return (
